@@ -1,6 +1,6 @@
 ﻿using BlazorCRUD.Domain.Entities;
 
-namespace BlazorCRUD.Domain.Repositories
+namespace BlazorCRUD.Domain.Interfaces
 {
     public interface IProductRepository
     {

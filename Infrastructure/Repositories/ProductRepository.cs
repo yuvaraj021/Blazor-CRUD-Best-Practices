@@ -1,9 +1,9 @@
 ﻿using BlazorCRUD.Domain.Entities;
-using BlazorCRUD.Domain.Repositories;
+using BlazorCRUD.Domain.Interfaces;
 using BlazorCRUD.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace BlazorCRUD.Infrastructure.Services
+namespace BlazorCRUD.Infrastructure.Respositories
 {
     public class ProductRepository : IProductRepository
     {

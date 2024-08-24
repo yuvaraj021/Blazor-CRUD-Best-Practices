@@ -1,8 +1,8 @@
 ﻿@page "/products"
 @using BlazorCRUD.Application.DTOs
+@using BlazorCRUD.Application.Interfaces
 @using BlazorCRUD.Domain.Entities
-@using BlazorCRUD.Domain.Repositories
-@inject IProductRepository ProductRepository
+@inject IProductService ProductService
 @inject NavigationManager NavigationManager
 
 <div class="container mt-4">

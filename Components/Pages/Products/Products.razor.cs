@@ -9,7 +9,7 @@ namespace BlazorCRUD.Components.Pages.Products
 
         protected override async Task OnInitializedAsync()
         {
-            products = await ProductRepository.GetAllAsync();
+            products = await ProductService.GetAllProductsAsync();
         }
 
         private void CreateNew()
@@ -24,8 +24,8 @@ namespace BlazorCRUD.Components.Pages.Products
 
         private async Task DeleteProduct(int id)
         {
-            await ProductRepository.DeleteAsync(id);
-            products = await ProductRepository.GetAllAsync();
+            await ProductService.DeleteProductAsync(id);
+            products = await ProductService.GetAllProductsAsync();
         }
     }
 }

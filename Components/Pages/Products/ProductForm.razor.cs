@@ -13,7 +13,7 @@ namespace BlazorCRUD.Components.Pages.Products
 
         protected override async Task OnInitializedAsync()
         {
-            var existingProduct = await ProductRepository.GetByIdAsync(Id);
+            var existingProduct = await ProductService.GetProductByIdAsync(Id);
             if (existingProduct != null)
             {
 
@@ -27,11 +27,11 @@ namespace BlazorCRUD.Components.Pages.Products
 
             if (productEntity.Id == 0)
             {
-                await ProductRepository.AddAsync(productEntity);
+                await ProductService.AddProductAsync(productEntity);
             }
             else
             {
-                await ProductRepository.UpdateAsync(productEntity);
+                await ProductService.UpdateProductAsync(productEntity);
             }
 
             NavigationManager.NavigateTo("/products");

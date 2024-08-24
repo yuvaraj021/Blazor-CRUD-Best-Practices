@@ -1,14 +1,37 @@
-using Microsoft.EntityFrameworkCore;
-using BlazorCRUD.Domain.Repositories;
-using BlazorCRUD.Infrastructure.Data;
-using BlazorCRUD.Infrastructure.Services;
-using BlazorCRUD.Components;
+using BlazorCRUD.Application.Interfaces;
 using BlazorCRUD.Application.Mapper;
-
+using BlazorCRUD.Application.Services;
+using BlazorCRUD.Components;
+using BlazorCRUD.Domain.Interfaces;
+using BlazorCRUD.Infrastructure.Data;
+using BlazorCRUD.Infrastructure.Respositories;
+using Microsoft.EntityFrameworkCore;
+using Serilog;
+using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Configure Serilog before building the host
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Error() // For testing purposes
+    .WriteTo.Console()
+    .WriteTo.File(
+        path: "logs/log.txt",
+        rollingInterval: RollingInterval.Day,
+        fileSizeLimitBytes: 10 * 1024 * 1024,
+        rollOnFileSizeLimit: true,
+        retainedFileCountLimit: null,
+        outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level}] {Message}{NewLine}{Exception}",
+        restrictedToMinimumLevel: LogEventLevel.Error) // Error level logs
+    .CreateLogger();
+
+
+// Ensure Serilog is used for logging
+builder.Host.UseSerilog();
+
+// Add services to the container
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
@@ -18,22 +41,31 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddAutoMapper(cfg =>
 {
     cfg.AddProfile<DataMapper>();
-    // Add other profiles as needed
 }, typeof(Program).Assembly);
 
+// Register repositories
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
+// Register services
+builder.Services.AddScoped<IProductService, ProductService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Use the custom exception handling middleware
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
+// Configure the HTTP request pipeline
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Error", createScopeForErrors: true);
+    app.UseExceptionHandler("/Error");
     app.UseHsts();
+}
+else
+{
+    app.UseDeveloperExceptionPage();
 }
 
 app.UseHttpsRedirection();
-
 app.UseStaticFiles();
 app.UseAntiforgery();
 
