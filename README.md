@@ -1,3 +1,4 @@
+# Blazor CRUD Best Practices
 # Blazor CRUD Application
 
 This is a Blazor Server application that demonstrates CRUD operations with best practices. The application uses Entity Framework Core, AutoMapper, and a clean architecture approach.
