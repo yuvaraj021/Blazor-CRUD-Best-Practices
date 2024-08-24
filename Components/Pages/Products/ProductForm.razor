@@ -1,0 +1,40 @@
+﻿@page "/product/{Id:int}"
+@using AutoMapper
+@using BlazorCRUD.Application.DTOs
+@using BlazorCRUD.Domain.Entities
+@using BlazorCRUD.Domain.Repositories
+@inject IProductRepository ProductRepository
+@inject NavigationManager NavigationManager
+@inject IMapper Mapper
+
+
+<div class="container mt-4">
+    <h3 class="mb-4">@((Id == 0) ? "Create" : "Edit") Product</h3>
+
+    <EditForm Model="product" OnValidSubmit="HandleValidSubmit" FormName="productCreateEdit">
+        <DataAnnotationsValidator />
+        <ValidationSummary class="text-danger" />
+
+        <div class="form-group">
+            <label for="productName">Name:</label>
+            <InputText id="productName" class="form-control" @bind-Value="product.Name" />
+        </div>
+
+        <div class="form-group">
+            <label for="productPrice">Price:</label>
+            <InputNumber id="productPrice" class="form-control" @bind-Value="product.Price" />
+        </div>
+
+        <div class="form-group">
+            <label for="productDescription">Description:</label>
+            <InputText id="productDescription" class="form-control" @bind-Value="product.Description" />
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="button" class="btn btn-secondary ml-2" @onclick="Cancel">Cancel</button>
+        </div>
+    </EditForm>
+</div>
+
+
