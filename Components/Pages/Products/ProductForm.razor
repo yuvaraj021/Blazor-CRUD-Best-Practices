@@ -11,18 +11,20 @@
 <div class="container mt-4">
     <h3 class="mb-4">@((Id == 0) ? "Create" : "Edit") Product</h3>
 
-    <EditForm Model="product" OnValidSubmit="HandleValidSubmit" FormName="productCreateEdit">
+    <EditForm Model="product" OnValidSubmit="HandleValidSubmit">
         <DataAnnotationsValidator />
         <ValidationSummary class="text-danger" />
 
         <div class="form-group">
             <label for="productName">Name:</label>
             <InputText id="productName" class="form-control" @bind-Value="product.Name" />
+            <ValidationMessage For="@(() => product.Name)" />
         </div>
 
         <div class="form-group">
             <label for="productPrice">Price:</label>
             <InputNumber id="productPrice" class="form-control" @bind-Value="product.Price" />
+            <ValidationMessage For="@(() => product.Price)" />
         </div>
 
         <div class="form-group">
@@ -31,10 +33,12 @@
         </div>
 
         <div class="form-group">
+            <br />
             <button type="submit" class="btn btn-primary">Save</button>
             <button type="button" class="btn btn-secondary ml-2" @onclick="Cancel">Cancel</button>
         </div>
     </EditForm>
+
 </div>
 
 
